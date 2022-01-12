@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content wrap box container"  style="color: rgb(15, 146, 37);">
+    <h2 class="letter_spacing">Sign Up <span>Form</span></h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+        <input class="sendButton btn btn-primary" type="submit"  value="Manager Sign Up">
+        </div>
+    <p class="text-center">If you already have an account, <a href="{% url 'account_login'%}">login</a> instead.</p>
+
+    </form>
+</div>
+{% endblock content %}

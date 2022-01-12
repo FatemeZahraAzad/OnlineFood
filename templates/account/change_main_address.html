@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+	<article id="content" class="col-8">
+		<div class="wrap">
+			{%for a in addresses%}
+				<section class="col-1-3"><div class="wrap-col">
+					<div class="box">
+						<div id="my-foods">
+							<h2 class="letter_spacing">{{a.state}}<span></span></h2>
+							<p class="pad_bot1">{{a.city}}</p>
+							<h2 class="letter_spacing">Street : <span>{{a.street}}</span></h2>
+							<h2 class="letter_spacing">pluque : <span>{{a.pluque}}</span></h2>
+							{%if msg%}
+								<h1>{{msg}}</h1>
+							{%endif%}
+						</div>
+					</div>
+				</section>
+			{%endfor%}
+		</div>
+	</article>
+{%endblock content%}

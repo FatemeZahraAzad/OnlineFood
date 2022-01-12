@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%if data%}
+{%for i in results%}
+<form method="GET" action="{% url 'search' %}">
+    {% csrf_token %}
+    <input class="form-control" type="text" placeholder="search" aria-label="search" name="search" id = 'searchInput'>
+  </form>
+{% endfor %}
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+    {% load i18n %}
+{% load account socialaccount %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+
+{% block nav %}
+    {% if user.is_authenticated and user.is_superuser%}
+        <li class="active"><a style="font-size:15px;" href="{% url 'foods' %}">Admin Panel</a></li>
+            {% elif user.is_authenticated and user.is_staff%}
+            <li class="active"><a style="font-size:15px;" href="{% url 'add_manager' %}">Sign Up</a></li>
+            <li class="active"><a style="font-size:15px;" href="{%url 'restaurant_panel'%}">restaurant panel</a></li>
+    {% endif %}
+{% endblock nav %}
+{% block content %}
+
+<h2 class="text-dark m-5"> Restaurants </h2>
+    <article id="content" class="container col-11">
+        <div class="wrap">
+            {% for i in branchs %}
+                <section class="col-1-3"><div class="wrap-col">
+                    <div class="box">
+                        <div id="my-foods">
+                            <a href="{% url 'branch_detail' i.id %}"><h2 class="letter_spacing">{{i.name}}<span></span></h2></a>
+                                {%for img in i.branch_menus.all%}
+                                    <figure><img src="{{img.food.food_image}}" alt="" ></figure>
+                                {%endfor%}
+                        </div>
+                    </div>
+                </section>
+            {%endfor%}  
+        </div>
+    </article>
+<h2 class="text-dark m-5"> Most Seller Foods </h2>
+
+    <article id="content" class="container col-11">
+        <div class="wrap">
+            {% for i in most_seller_foods %}
+                <section class="col-1-3"><div class="wrap-col">
+                    <div class="box">
+                        <div id="my-foods">
+                            <h2 class="letter_spacing">{{i.food_name}}<span></span></h2>
+                                <figure><img src="{{i.food_image.url}}" alt="" ></figure>
+                                <p class="pad_bot1">{{i.created_at_jalali.date}}</p>
+                            <a href="{% url 'order_detail' i.id %}" class="button1">Details</a>
+                        </div>
+                    </div>
+                </section>
+            {%endfor%}  
+        </div>
+    </article>
+
+
+<h2 class="text-dark m-5"> Most Seller Branches </h2>
+
+    <article id="content" class="container col-11">
+        <div class="wrap">
+            {% for i in most_seller_restaurant %}
+                <section class="col-1-3"><div class="wrap-col">
+                        <div class="box">
+                            <div id="my-foods">
+                                <h2 class="letter_spacing">{{i.name}}<span></span></h2>
+                                <p class="pad_bot1">{{i.address.city}}</p>
+                                <p class="pad_bot1">{{i.created_at_jalali.date}}</p>
+                            <a href="{% url 'order_detail' i.id %}" class="button1">Details</a>
+                        </div>
+                    </div>
+                </section>
+            {%endfor%}  
+        </div>
+    </article>
+
+
+
+
+<h2 class="text-dark m-5"> Menues </h2>
+    <div class="row-2">
+        {% for i in menus %}
+            <article id="content">
+                <div class="container">
+                    <div class="wrap">      
+                        <section class="col-1-3"><div class="wrap-col"> 
+                            <div class="box">
+                                <div id="my-foods">  
+                                    <h2 class="letter_spacing">{{i.food.food_name}}<span></span></h2>
+                                    <figure><img src="{{i.food.food_image.url}}" alt="" ></figure>
+                                    <p class="pad_bot1"> {{i.branch.name}}</p>
+                                    <a href="{% url 'order_detail' i.id %}" class="button1">Details</a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </article>
+        {%endfor%}
+    </div>
+
+<script type="text/javascript"> Cufon.now(); </script>
+{% endblock content %}
+
+
+{% block script %}
+<script type="text/javascript">
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+
+
+
+    let device = getCookie('device')
+
+    if (device == null || device == undefined){
+        device = uuidv4()
+    }
+
+    document.cookie ='device=' + device + ";domain=;path=/"
+
+</script>
+
+
+
+
+{% endblock script %}
+            
