@@ -7,9 +7,10 @@
 {% block nav %}
     {% if user.is_authenticated and user.is_superuser%}
         <li class="active"><a style="font-size:15px;" href="{% url 'foods' %}">Admin Panel</a></li>
-            {% elif user.is_authenticated and user.is_staff%}
-            <li class="active"><a style="font-size:15px;" href="{% url 'add_manager' %}">Sign Up</a></li>
-            <li class="active"><a style="font-size:15px;" href="{%url 'restaurant_panel'%}">restaurant panel</a></li>
+        {% elif user.is_authenticated and user.is_staff%}
+        <li class="active"><a style="font-size:15px;" href="{%url 'restaurant_panel'%}">restaurant panel</a></li>
+        {% else %}
+        <li class="active"><a style="font-size:15px;" href="{% url 'customer_panel' %}">Customers Panel</a></li>
     {% endif %}
 {% endblock nav %}
 {% block content %}

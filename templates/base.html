@@ -23,14 +23,15 @@
 			<header>
 				<nav class='col-12'>
 					<ul id="menu" class='col-sm-7'>
-						<li class="active"><a style="font-size:15px;" href="{%url 'add_to_cart'%}">Cart</a></li>
-						<li class="active"><a style="font-size:15px;" href="{% url 'account_login' %}">LogIn</a></li>
+						{% if user.is_authenticated and user.is_staff%}
 						<li class="active"><a style="font-size:15px;" href="{% url 'account_logout' %}">LogOut</a></li>
 						<li class="active"><a style="font-size:15px;" href="{%url 'home'%}">Home</a></li>
+						{% else %}
+						<li class="active"><a style="font-size:15px;" href="{%url 'add_to_cart'%}">Cart</a></li>
+						<li class="active"><a style="font-size:15px;" href="{% url 'account_login' %}">LogIn</a></li>
 						<li class="active"><a style="font-size:15px;" href="{%url 'add_manager'%}">Managers SignUp</a></li>
 						<li class="active"><a style="font-size:15px;" href="{% url 'add_customer' %}">Customers SignUp</a></li>
-						<li class="active"><a style="font-size:15px;" href="{% url 'customer_panel' %}">Customers Panel</a></li>
-						
+						{% endif %}
 						{% block nav %}{% endblock nav %}
 					</ul>
 					<div class="row">

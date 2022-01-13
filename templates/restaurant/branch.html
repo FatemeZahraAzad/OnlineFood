@@ -2,9 +2,9 @@
 {% block nav %}
 
 {% if user.is_authenticated and user.is_staff%}
-    <li><a style="font-size:20px;" href="{% url 'create_menu' %}">Add Menu</a></li>
-    <li><a style="font-size:20px;" href="{% url 'branch_edit' branchs.id %}">Edit Branch</a></li>
-    <li><a style="font-size:20px;" href="{% url 'manager_edit' manager.id %}">Edit Manager</a></li>
+    <li class="active"><a style="font-size:15px;" href="{% url 'create_menu' %}">Add Menu</a></li>
+    <li class="active"><a style="font-size:15px;" href="{% url 'branch_edit' branchs.id %}">Edit Branch</a></li>
+    <li class="active"><a style="font-size:15px;" href="{% url 'manager_edit' manager.id %}">Edit Manager</a></li>
 {% endif %}
 
 {% endblock nav %}
@@ -40,10 +40,10 @@
                         <div class="box">
                             <div id="my-foods">
                                 <h2 class="letter_spacing">{{o.order_items.menu.food.food_name}}<span></span></h2>
-                                <h2 class="letter_spacing">{{o.customer.username}}<span></span></h2>
+                                <h2 class="letter_spacing">{{o.customer.email}}<span></span></h2>
                                 <p class="pad_bot1">Status : {{o.customer_status}}</p>
                                 <p class"letter_spacing">Price : <span>{{o.total_price}}</span></p>
-                                <p class"letter_spacing">Date : <span>{{o.order_date}}</span></p>
+                                <p class"letter_spacing">Date : <span>{{o.created_at_jalali}}</span></p>
                                 {%endif%}
                             </div>
                         </div>
