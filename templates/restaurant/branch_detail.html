@@ -1,27 +1,19 @@
 {% extends 'base.html' %}
-
 {% block content %}
-{% load static %}
-	<article id="content" class="col-8">
-		<div class="wrap">
-			<section class="col-1-3"><div class="wrap-col">
-				<div class="box">
-					<div id="my-foods">
-						<h2 class="letter_spacing">{{branch_detail.food_category.food_category_name}}<span></span></h2>
-						<p class="pad_bot1">{{branch_detail.name}}</p>
-						<h2 class="letter_spacing">price : <span>{{menus.price}}</span></h2>
-						<h2 class="letter_spacing">Restaurant : <span>{{menus.branch.name}}</span></h2>
-							{%if msg%}
-								<h1>{{msg}}</h1>
-							{%endif%}
-							<form method="POST" action="{% url 'order_detail' menus.id %}" class="text-dark">
-								{% csrf_token %}
-								<input min="1" value=1 type="number" name="number" class="m-2">
-								<button class="btn btn-dark ml-5" type="submit">Add to Cart</button>
-							</form>
-					</div>
-				</div>
-			</section>
-		</div>
-	</article>
-{%endblock content%}
+
+<div class="card-group text-dark">
+  <div class="card">
+    <h3 class="card-img-top" >title:{{object.address}} </h3>
+    <div class="card-body">
+  <figure><img src="{{objects.branch_menus.food.food_image.url}}" alt="" ></figure>
+      <p class="card-text">price:{{restaurantbranch.price}}</p>
+      <h5>number:{{restaurantbranch.number_menu}}</h5>
+      
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">date:{{task.due_date}}</small>
+    </div>
+  </div> 
+</div>
+
+{% endblock content %}

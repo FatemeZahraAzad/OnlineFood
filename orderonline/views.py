@@ -202,14 +202,14 @@ class MenuDelete(DeleteView):
 class BranchList(ListView):
     contecxt_object_name = "branchs"
     model = Branch
-    template_name = "home.html"
-    fields = "__all__"
+    template_name = "restaurant/restaurant.html"
+
 
 class BranchDetail(DetailView):
     contecxt_object_name = "branch_detail"
+    queryset = Branch.objects.all()
     model = Branch
     template_name = "restaurant/branch_detail.html"
-    fields = "__all__"
 
 """
 _________________________________________________________Customer Panel_________________________________________________________

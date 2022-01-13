@@ -23,10 +23,11 @@ urlpatterns=[
     path("create_menu/",MenuCreate.as_view(),name="create_menu"),
     path("delete_menu/<int:pk>/",MenuDelete.as_view(),name="delete_menu"),
     path("edit_menu/<int:pk>/",MenuUpdate.as_view(),name="edit_menu"),
+    path('branch_list/',BranchList.as_view(),name="branch_list"),
+    path('branch_detail/<int:pk>',BranchDetail.as_view(),name="branchdetail"),
 
     # search
     path('search/',search_result,name="search"),
-    # path('<int:pk>/',get_info_search,name="get_search"),
 
     #customer
     path('customer_panel/',CustomerOrders.as_view(),name="customer_panel"),
