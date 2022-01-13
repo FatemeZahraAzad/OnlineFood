@@ -229,19 +229,6 @@ class CustomerOrders(TemplateView):
 _________________________________________________________Search_________________________________________________________
 
 """
-
-# def search(request):
-#     ctx = {}
-#     data = request.GET.get("search")
-
-#     if data:
-#         results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__name__icontains=data)| Q(branch__restaurant__name=data))
-#     else:
-#         results = Menu.objects.all()
-    
-#     ctx = render_to_string("base.html",{'results':results,'request':request})
-#     return JsonResponse({'data': ctx})
-
 def search(req):
     if req.is_ajax():
         res = None
@@ -268,4 +255,4 @@ def search(req):
 
 def get_info_search(req, pk):
     obj = get_object_or_404(Menu, pk=pk)
-    return render(req, 'restaurant/search.html', {'obj':obj})
+    return render(req, 'search/search.html', {'obj':obj})

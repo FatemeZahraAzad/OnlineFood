@@ -58,6 +58,7 @@
 				{% block script %}{% endblock script %}
 				
 <script>
+	jQuery(document).ready(function($){
 	window.onload = function (){
 	
 	  const url=  window.location.href
@@ -75,6 +76,7 @@
 				  'csrfmiddlewaretoken':csrf,
 				  'data': data,
 			  },
+			  
 			  success: function(res){
 				  // console.log(res.dataa)
 				  const data = res.dataa
@@ -92,7 +94,7 @@
 						  </a>
 						  `
 					  })
-	  
+					  console.log(data);
 	  
 				  }else{
 					  if (searchInput.value.length > 0){
@@ -121,6 +123,7 @@
 	   
 		
 	  }
+	})
 	</script>
 </body>
 </html>
