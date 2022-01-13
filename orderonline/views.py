@@ -13,7 +13,7 @@ from .decorator import superuser_required, is_staff_required, customer_required
 from django.db.models import Q
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-
+from django.shortcuts import get_object_or_404
 """
 _________________________________________________________Foods_________________________________________________________
 
@@ -230,28 +230,42 @@ _________________________________________________________Search_________________
 
 """
 
-def search(request):
-    ctx = {}
-    data = request.GET.get("search")
-    print(data)
-    print("_____________________________________________________________")
-    if data:
-        results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__name__icontains=data))
-    else:
-        results = Menu.objects.all()
-    ctx["results"] = results
-    print(ctx)
-    print("_____________________________________________________________")
-    print(results)
-    print("_____________________________________________________________")
-    if request.is_ajax():
-        print(request.is_ajax())
-        print("_____________________________________________________________")
-        html = render_to_string(
-            template_name="search/search.html", 
-            context={"results": results}
-        )
-        data_dict = {"html_from_view": html}
-        print(data_dict)
-        return JsonResponse(data=data_dict, safe=False)
-    return render(request, "base.html", context=ctx)
+# def search(request):
+#     ctx = {}
+#     data = request.GET.get("search")
+
+#     if data:
+#         results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__name__icontains=data)| Q(branch__restaurant__name=data))
+#     else:
+#         results = Menu.objects.all()
+    
+#     ctx = render_to_string("base.html",{'results':results,'request':request})
+#     return JsonResponse({'data': ctx})
+
+def search_result(req):
+    if req.is_ajax():
+        res = None
+        result = req.POST.get('data')
+        q = Menu.objects.filter(Q(food__food_name__icontains=result) | Q(branch__name__icontains=result)| Q(branch__restaurant__name=result))
+        if len(q) > 0 and len(result) > 0:
+            data =[]
+            for i in q:
+                item ={
+                    'pk' : i.pk,
+                    'food':{'food_name':i.food.food_name, 'img':i.food.food_image.url},
+                    'menu': {'branch_name':i.branch.name, 'branch':i.branch.food_category.food_category_name},
+                    'price': i.price,
+                    'number': i.menu_number
+                }
+                data.append(item)
+            res = data
+        else:
+            res = "No Food Or Restaurant Found..."
+
+        return JsonResponse({'dataa':res})
+    return JsonResponse({})
+
+
+def get_info_search(req, pk):
+    obj = get_object_or_404(Menu, pk=pk)
+    return render(req, 'restaurant/search.html', {'obj':obj})
