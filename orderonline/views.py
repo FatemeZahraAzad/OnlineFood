@@ -11,6 +11,8 @@ from django.db.models import Sum
 from .serializers import *
 from .decorator import superuser_required, is_staff_required, customer_required
 from django.db.models import Q
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 """
 _________________________________________________________Foods_________________________________________________________
@@ -229,9 +231,27 @@ _________________________________________________________Search_________________
 """
 
 def search(request):
-    results=[]
-    if request.method == 'GET':
-        data = request.GET.get('data')
-        results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__name__icontains=data))   
-    return render(request,"search/search.html",{'data':data,'results':results})
-
+    ctx = {}
+    data = request.GET.get("search")
+    print(data)
+    print("_____________________________________________________________")
+    if data:
+        results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__name__icontains=data))
+    else:
+        results = Menu.objects.all()
+    ctx["results"] = results
+    print(ctx)
+    print("_____________________________________________________________")
+    print(results)
+    print("_____________________________________________________________")
+    if request.is_ajax():
+        print(request.is_ajax())
+        print("_____________________________________________________________")
+        html = render_to_string(
+            template_name="search/search.html", 
+            context={"results": results}
+        )
+        data_dict = {"html_from_view": html}
+        print(data_dict)
+        return JsonResponse(data=data_dict, safe=False)
+    return render(request, "base.html", context=ctx)

@@ -104,7 +104,7 @@ def delete_address(request,pk):
 		context = {}
 		context["orders"] = Order.objects.filter(customer__username = request.user.username)
 		context["address"] = Address.objects.filter(customer_address__customer_id__username=request.user.username)
-		if CustomerAddress.objects.filter(address_id__id = pk).values_list("is_main_address")[0][0] != True:
+		if CustomerAddress.objects.filter(address_id__id = pk).values_list("is_main_address")[0][0] == True:
 			context["msg"] = "you cannot delete your last address!"
 			return render(request,'customer/customer_panel.html',context)
 		else:

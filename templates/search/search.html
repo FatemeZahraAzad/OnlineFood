@@ -1,12 +1,10 @@
-{% extends 'base.html' %}
 
-{% block content %}
-{%if data%}
-{%for i in results%}
-<form method="GET" action="{% url 'search' %}">
-    {% csrf_token %}
-    <input class="form-control" type="text" placeholder="search" aria-label="search" name="search" id = 'searchInput'>
-  </form>
+{% if results %}
+<ul>
+{% for i in results %}
+  <li>{{ i.food.food_name }}</li>
 {% endfor %}
+</ul>
+{% else %}
+<p>No results found.</p>
 {% endif %}
-{% endblock content %}

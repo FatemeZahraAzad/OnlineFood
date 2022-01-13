@@ -25,7 +25,7 @@ urlpatterns=[
     path("edit_menu/<int:pk>/",MenuUpdate.as_view(),name="edit_menu"),
 
     # search
-    path('search/',search,name="search-form"),
+    path('search/',search,name="search"),
 
 
     #customer
