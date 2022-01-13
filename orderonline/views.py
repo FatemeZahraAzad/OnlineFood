@@ -242,7 +242,7 @@ _________________________________________________________Search_________________
 #     ctx = render_to_string("base.html",{'results':results,'request':request})
 #     return JsonResponse({'data': ctx})
 
-def search_result(req):
+def search(req):
     if req.is_ajax():
         res = None
         result = req.POST.get('data')
