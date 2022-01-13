@@ -1,4 +1,4 @@
-jQuery(document).ready(function($){
+$(document).ready(function(){
 	window.onload = function (){
 	
 	  const url=  window.location.href
@@ -28,7 +28,7 @@ jQuery(document).ready(function($){
 						  <a href="${url}${food.pk}" class='item' >
 							  <div class ="row" style="margin-left:10px">
 								  <div class ="col-2>
-									  <p class="text-muted" ><img src="${food.food.img}" class="food-img"> <b style="color:black">${food.food.food_name}</b><b style="color:#17a2b8"> ${food.menu.branch_name}</b> <b style="color:#6610f2">${food.price} ${food.menu.branch}</b></p>
+									  <p class="text-muted" ><img src="${food.food.img}" class="food-img"> <b style="color:black">${food.food.food_name}</b><b style="color:#17a2b8"> ${food.menu.branch_name}</b> <b style="color:#6610f2">${food.price} ${food.menu.category}</b></p>
 								  </div>
 							  </div>
 						  </a>
@@ -62,5 +62,4 @@ jQuery(document).ready(function($){
 	  })
 	   
 		
-	  }
-	})
+	  }});

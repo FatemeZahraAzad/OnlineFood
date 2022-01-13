@@ -229,30 +229,26 @@ class CustomerOrders(TemplateView):
 _________________________________________________________Search_________________________________________________________
 
 """
-def search(req):
-    if req.is_ajax():
-        res = None
-        result = req.POST.get('data')
-        q = Menu.objects.filter(Q(food__food_name__icontains=result) | Q(branch__name__icontains=result)| Q(branch__restaurant__name=result))
-        if len(q) > 0 and len(result) > 0:
-            data =[]
-            for i in q:
-                item ={
-                    'pk' : i.pk,
-                    'food':{'food_name':i.food.food_name, 'img':i.food.food_image.url},
-                    'menu': {'branch_name':i.branch.name, 'branch':i.branch.food_category.food_category_name},
-                    'price': i.price,
-                    'number': i.menu_number
-                }
-                data.append(item)
-            res = data
-        else:
-            res = "No Food Or Restaurant Found..."
+# def search_result(request):
+#     results=[]
+#     if request.method == 'GET':
+#         data = request.GET.get('search')
+#         results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__name__icontains=data))  
+#         print(results) 
+#         print("__________________________________________________")
+#         print(data)
+#     return render(request,"search/search.html",{'data':data,'results':results})
 
-        return JsonResponse({'dataa':res})
-    return JsonResponse({})
-
-
-def get_info_search(req, pk):
-    obj = get_object_or_404(Menu, pk=pk)
-    return render(req, 'search/search.html', {'obj':obj})
+def search_result(req):
+    """
+        all users are able to search food and restaurant's name
+    """
+    results=[]
+    if req.method == 'GET':
+        query = req.GET.get('search')
+        if query == '':
+            query = 'None'
+        results = Menu.objects.filter(Q(food__food_name__icontains= query)| Q(branch__name__icontains=query))
+    context ={'query': query, 'results': results}
+    print(results)
+    return render(req, 'search/search.html', context)
