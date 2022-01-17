@@ -100,40 +100,40 @@ def address_create(request):
 
 @login_required
 def delete_address(request,pk):
-	if not request.user.is_staff:
-		context = {}
-		context["orders"] = Order.objects.filter(customer__username = request.user.username)
-		context["address"] = Address.objects.filter(customer_address__customer_id__username=request.user.username)
-		if CustomerAddress.objects.filter(address_id__id = pk).values_list("is_main_address")[0][0] == True:
-			context["msg"] = "you cannot delete your last address!"
-			return render(request,'customer/customer_panel.html',context)
-		else:
-			address = CustomerAddress.objects.get(address_id__id = pk)
-			address.delete()
-			context["msg"] = "address deleted successfully!"
-			return render(request,'customer/customer_panel.html',context)
-	else:
-		return render(request,'customer/customer_panel.html',{"msg":"you are not manager!"})
+  if not request.user.is_staff:
+    context = {}
+    context["orders"] = Order.objects.filter(customer__username = request.user.username)
+    context["address"] = Address.objects.filter(customer_address__customer_id__username=request.user.username)
+    if CustomerAddress.objects.filter(address_id__id = pk).values_list("is_main_address")[0][0] == True:
+      context["msg"] = "you cannot delete your main address!"
+      return render(request,'customer/customer_panel.html',context)
+    else:
+      address = CustomerAddress.objects.get(address_id__id = pk)
+      address.delete()
+      context["msg"] = "address deleted successfully!"
+      return render(request,'customer/customer_panel.html',context)
+  else:
+    return render(request,'customer/customer_panel.html',{"msg":"you are not customer!"})
 
 @login_required
 def change_main_address(request,pk):
-	if not(request.user.is_staff ):
-		context = {}
-		context["orders"] = Order.objects.filter(customer__username = request.user.username)
-		context["address"] = Address.objects.filter(customer_address__customer_id__username = request.user.username)
-		if CustomerAddress.objects.filter(address_id__id= pk).values_list("is_main_address")[0][0] != True:
-			customer_address = CustomerAddress.objects.filter(customer_id__username=request.user.username).get(is_main_address=True)
-			customer_address.is_main_address = False
-			customer_address.save()
-			address = CustomerAddress.objects.get(address_id__id = pk)
-			address.is_main_address = True
-			address.save()
-			context["msg"] = "chosen address changed to main address!"
-		else:
-			context["msg"] = "this is your default!"
-			return render(request,"customer/customer_panel.html",context)
-	else:
-		return render(request,"customer/customer_panel.html",{"msg":"you are not a customer"})
+  if not(request.user.is_staff ):
+    context = {}
+    context["orders"] = Order.objects.filter(customer__username = request.user.username)
+    context["address"] = Address.objects.filter(customer_address__customer_id__username = request.user.username)
+    if CustomerAddress.objects.filter(address_id__id= pk).values_list("is_main_address")[0][0] != True:
+      customer_address = CustomerAddress.objects.filter(customer_id__username=request.user.username).get(is_main_address=True)
+      customer_address.is_main_address = False
+      customer_address.save()
+      address = CustomerAddress.objects.get(address_id__id = pk)
+      address.is_main_address = True
+      address.save()
+      context["msg"] = "chosen address changed to main address!"
+    else:
+      context["msg"] = "this is your default!"
+    return render(request,"customer/customer_panel.html",context)
+  else:
+    return render(request,"customer/customer_panel.html",{"msg":"you are not a customer"})
 """
 _________________________________________________________Login_________________________________________________________
 

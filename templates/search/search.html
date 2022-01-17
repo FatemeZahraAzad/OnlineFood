@@ -41,3 +41,22 @@
 {% endif %}
 
 {% endblock content %}
+{% comment %} 
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% if foods %}
+    <ul>
+        {% for f in foods %}
+        <li>{{ f.food_name }}</li>
+        
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No artists found.</p>
+{% endif %}
+
+{% endblock content %}
+ {% endcomment %}

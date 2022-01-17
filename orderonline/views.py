@@ -11,9 +11,7 @@ from django.db.models import Sum
 from .serializers import *
 from .decorator import superuser_required, is_staff_required, customer_required
 from django.db.models import Q
-from django.template.loader import render_to_string
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+
 """
 _________________________________________________________Foods_________________________________________________________
 
@@ -229,15 +227,7 @@ class CustomerOrders(TemplateView):
 _________________________________________________________Search_________________________________________________________
 
 """
-# def search_result(request):
-#     results=[]
-#     if request.method == 'GET':
-#         data = request.GET.get('search')
-#         results = Menu.objects.filter(Q(food__food_name__icontains=data) | Q(branch__name__icontains=data))  
-#         print(results) 
-#         print("__________________________________________________")
-#         print(data)
-#     return render(request,"search/search.html",{'data':data,'results':results})
+
 
 def search_result(req):
     """
@@ -252,3 +242,4 @@ def search_result(req):
     context ={'query': query, 'results': results}
     print(results)
     return render(req, 'search/search.html', context)
+

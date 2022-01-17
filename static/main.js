@@ -1,65 +1,42 @@
-$(document).ready(function(){
-	window.onload = function (){
-	
-	  const url=  window.location.href
-	  const searchForm = document.getElementById("search-form")
-	  const searchInput = document.getElementById("search-input")
-	  const resultBox = document.getElementById('result-box')
-	  
-	  const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value
-	  
-	  const sendSearchData = (data)=>{
-		  $.ajax({
-			  type:'POST',
-			  url: URL,
-			  data :{
-				  'csrfmiddlewaretoken':csrf,
-				  'data': data,
-			  },
-			  
-			  success: function(res){
-				  // console.log(res.dataa)
-				  const data = res.dataa
-				  if (Array.isArray(data)){
-					  resultBox.innerHTML = ''
-					  data.forEach(food=>{
-						  resultBox.innerHTML += `
-						  
-						  <a href="${url}${food.pk}" class='item' >
-							  <div class ="row" style="margin-left:10px">
-								  <div class ="col-2>
-									  <p class="text-muted" ><img src="${food.food.img}" class="food-img"> <b style="color:black">${food.food.food_name}</b><b style="color:#17a2b8"> ${food.menu.branch_name}</b> <b style="color:#6610f2">${food.price} ${food.menu.category}</b></p>
-								  </div>
-							  </div>
-						  </a>
-						  `
-					  })
-					  console.log(data);
-	  
-				  }else{
-					  if (searchInput.value.length > 0){
-						  resultBox.innerHTML=`<b>${data}</b>`
-					  }else{
-						  resultBox.classList.add('not-visible')
-					  }
-				  }
-			 
-			  },
-			  error: function(error){
-				  console.log(error)
-			  }
-		  })
-	  }
-	  
-	  
-	  // load whatever is added in search input as value (letter by letter)
-	  searchInput.addEventListener('keyup', e=>{
-		  console.log(e.target.value)
-		  if (resultBox.classList.contains('not-visible')){
-			  resultBox.classList.remove('not-visible')
-		  }
-		  sendSearchData(e.target.value)
-	  })
-	   
-		
-	  }});
+const user_input = $("#user-input")
+const search_icon = $('#search-icon')
+const artists_div = $('#replaceable-content')
+const endpoint = '/artists/'
+const delay_by_in_ms = 700
+let scheduled_function = false
+console.log('bitch')
+let ajax_call = function (endpoint, request_parameters) {
+	$.getJSON(endpoint, request_parameters)
+		.done(response => {
+			// fade out the artists_div, then:
+			artists_div.fadeTo('slow', 0).promise().then(() => {
+				// replace the HTML contents
+				artists_div.html(response['html_from_view'])
+				// fade-in the div with new contents
+				artists_div.fadeTo('slow', 1)
+				// stop animating search icon
+				search_icon.removeClass('blink')
+			})
+		})
+}
+
+
+user_input.on('keyup', function () {
+
+	const request_parameters = {
+		q: $(this).val() // value of user_input: the HTML element with ID user-input
+	}
+
+	// start animating the search icon with the CSS class
+	search_icon.addClass('blink')
+
+	// if scheduled_function is NOT false, cancel the execution of the function
+	if (scheduled_function) {
+		clearTimeout(scheduled_function)
+	}
+
+	// setTimeout returns the ID of the function to be executed
+	scheduled_function = setTimeout(ajax_call, delay_by_in_ms, endpoint, request_parameters)
+})
+
+
