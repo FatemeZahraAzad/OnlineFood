@@ -3,7 +3,6 @@ from django.core.validators import MinValueValidator
 import jdatetime
 from accounts.models import *
 
-
 class Order(models.Model):
     customer = models.ForeignKey(Customer,related_name="customer_order",on_delete=models.SET_NULL, null=True, blank=True)
     address = models.ForeignKey(CustomerAddress,on_delete=models.SET_NULL,related_name="orders",null=True)
@@ -35,7 +34,6 @@ class Order(models.Model):
     
     def __str__(self):
         return self.customer_status
-
 
 class Food(models.Model):
     food_name = models.CharField(max_length=200,verbose_name="food_name")
@@ -73,8 +71,6 @@ class Menu(models.Model):
     def __str__(self):
         return self.food.food_name
 
-
-
 class OrderItem(models.Model):   #middle table
     order = models.ForeignKey(Order,related_name="order_items",on_delete=models.SET_NULL,null=True)
     number = models.IntegerField(validators = [MinValueValidator(1)],null=True)
@@ -96,7 +92,6 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.restaurant_name
-
 
 class Branch(models.Model):
     food_category = models.ForeignKey(FoodCategory,on_delete=models.CASCADE,related_name='branch')
