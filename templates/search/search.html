@@ -1,4 +1,37 @@
+
+
+
 {% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <a href="{% url 'home' %}" class="btn btn-danger  mb-2" style="margin-top: 10px">Back</a>
+    <article id="content">
+        <div class="container">
+            <div class="wrap">      
+                <section class="col-1-3"><div class="wrap-col"> 
+                    <div class="box">
+                        <div id="my-foods">  
+                        <h2 class="letter_spacing">{{i.food.food_name}}<span></span></h2>
+                        <figure><img src="{{i.food.food_image.url}}" alt="" ></figure>
+                        <p class="pad_bot1">Restaurant : {{i.branch.name}}</p>
+                        <a href="{% url 'order_detail' i.id %}" class="button1">Details</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</article>
+             
+
+
+{% endblock content %}
+
+
+
+
+{% comment %} {% extends 'base.html' %}
 
 {% block content %}
 
@@ -40,7 +73,7 @@
 {% endfor %}
 {% endif %}
 
-{% endblock content %}
+{% endblock content %} {% endcomment %}
 {% comment %} 
 {% extends 'base.html' %}
 

@@ -28,6 +28,7 @@ urlpatterns=[
 
     # search
     path('search/',search_result,name="search"),
+    path('search/<int:pk>/',get_info_search,name="get_search"),
 
     #customer
     path('customer_panel/',CustomerOrders.as_view(),name="customer_panel"),

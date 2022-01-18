@@ -11,7 +11,7 @@ from django.db.models import Sum
 from .serializers import *
 from .decorator import superuser_required, is_staff_required, customer_required
 from django.db.models import Q
-from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 
 """
@@ -73,7 +73,7 @@ def food(request,pk):
             device = request.COOKIES['device']
             customer, created = Customer.objects.get_or_create(username=device,email=device+"@gmail.com",device=device)
         if Order.objects.filter(customer=customer).filter(customer_status="ordered") and Menu.objects.filter(orderitems__order__customer_status="ordered").filter(orderitems__order__customer=customer):
-            if (Menu.objects.filter(id = pk).values_list("branch__name").last())[0] == Menu.objects.filter(orderitems__order__customer_status="ordered").filter(orderitems__order__customer=customer).values_list("branch__name").first()[0]:
+            if (Menu.objects.filter(id = pk).values_list("branch__name").last())[0] == Menu.objects.filter(orderitems__order__customer_status="ordered").filter(orderitems__order__customer=customer).values_list("branch__name").first()[0]: #چک کردن اینه که از یک برنچ سفارش دادخ شده
                 if ((Menu.objects.filter(id = pk).values_list('menu_number').last())[0]) >= int(request.POST['number']):  #موجودی انبار
                     order, created = Order.objects.get_or_create(customer=customer, customer_status='ordered')
                     orderItem, created = OrderItem.objects.get_or_create(order=order, menu=menus)
@@ -230,38 +230,53 @@ _________________________________________________________Search_________________
 
 """
 
-
 def search_result(req):
-    """
-        all users are able to search food and restaurant's name
-    """
-    results=[]
-    if req.method == 'GET':
-        query = req.GET.get('search')
-        if query == '':
-            query = 'None'
-        results = Menu.objects.filter(Q(food__food_name__icontains= query)| Q(branch__name__icontains=query))
-    context ={'query': query, 'results': results}
-    print(results)
-    return render(req, 'search/search.html', context)
+    if req.is_ajax():
+        res = None
+        result = req.POST.get('data')
+        q = Menu.objects.filter(Q(food__food_name__icontains=result) | Q(branch__name__icontains=result))
+        if len(q) > 0 and len(result) > 0:
+            data =[]
+            for i in q:
+                item ={
+                    'pk' : i.pk,
+                    'food':{'food_name':i.food.food_name, 'img':i.food.food_image.url},
+                    'menu': {'branch_name':i.branch.name, 'category':i.branch.food_category.food_category_name},
+                    'price': i.price,
+                    'number': i.menu_number
+                }
+                data.append(item)
+            res = data
+        else:
+            res = "No Food Or Restaurant Found..."
 
+        return JsonResponse({'dataa':res})
+    return JsonResponse({})
 
+def get_info_search(req, pk):
+    obj = get_object_or_404(Menu, pk=pk)
+    return render(req, 'search/search.html', {'obj':obj})
 
-def check_out_post_address(request):
-    if request.is_ajax() and request.method == "POST":
-        form = AddAddressForm(request.POST)
+"""
+_________________________________________________________Address_________________________________________________________
 
-        if form.is_valid():
+"""
 
-            obj = form.save(commit=False)
-            obj.customer = Customer.objects.get(pk=request.user.id)
-            obj.save()
+# def check_out_post_address(request):
+#     if request.is_ajax() and request.method == "POST":
+#         form = AddAddressForm(request.POST)
+
+#         if form.is_valid():
+
+#             obj = form.save(commit=False)
+#             obj.customer = Customer.objects.get(pk=request.user.id)
+#             obj.save()
             
-            customer = request.user
-            address_list=CustomerAddress.objects.filter(customer=customer)
-            t= render_to_string('customer/address_selector.html',{'address_list': address_list})
-            return JsonResponse({'data': t})
-        else:          
-            return JsonResponse({"error": form.errors}, status=400)
+#             customer = request.user
+#             address_list=CustomerAddress.objects.filter(customer=customer)
+#             t= render_to_string('customer/address_selector.html',{'address_list': address_list})
+#             return JsonResponse({'data': t})
+#         else:          
+#             return JsonResponse({"error": form.errors}, status=400)
 
-    return JsonResponse({"error": ""}, status=400)
+#     return JsonResponse({"error": ""}, status=400)
