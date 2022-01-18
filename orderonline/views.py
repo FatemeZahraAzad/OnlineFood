@@ -11,6 +11,8 @@ from django.db.models import Sum
 from .serializers import *
 from .decorator import superuser_required, is_staff_required, customer_required
 from django.db.models import Q
+from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 """
 _________________________________________________________Foods_________________________________________________________
@@ -243,3 +245,23 @@ def search_result(req):
     print(results)
     return render(req, 'search/search.html', context)
 
+
+
+def check_out_post_address(request):
+    if request.is_ajax() and request.method == "POST":
+        form = AddAddressForm(request.POST)
+
+        if form.is_valid():
+
+            obj = form.save(commit=False)
+            obj.customer = Customer.objects.get(pk=request.user.id)
+            obj.save()
+            
+            customer = request.user
+            address_list=CustomerAddress.objects.filter(customer=customer)
+            t= render_to_string('customer/address_selector.html',{'address_list': address_list})
+            return JsonResponse({'data': t})
+        else:          
+            return JsonResponse({"error": form.errors}, status=400)
+
+    return JsonResponse({"error": ""}, status=400)

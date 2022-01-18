@@ -22,11 +22,14 @@
 									  Dropdown button
 									</button>
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-										<select name="cart_address" id="validationDefault05" required >
-										{% for address in customer_address %}
-										<option value="{{address.id}}" >{{address.address_id.state}},{{address.address_id.city}},{{address.address_id.street}},{{address.address_id.plaque}}</option>
-										{% endfor %}
-									</select></a>
+										{% comment %} <label for="">Address</label> {% endcomment %}
+										<select name="address_id" class="form-control" aria-describedby="helpId">
+											{% for address in address_list %}
+												<option value="{{ address.id }}">
+												{{ address.state }}  {{ address.city }}  {{ address.pluque }}
+											</option>
+											{% endfor %}
+										</select>
 									</div>
 								  </div>
 								  <a class="dropdown-item btn btn-danger" href="{% url 'addaddress' %}">Add Address</a>

@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block nav %}
+<li class="active"><a style="font-size:15px;" href="{%url 'add_to_cart'%}">Cart</a></li>
+{% endblock nav %}
 {% block content %}
 
 <a href="{% url 'addaddress' %}" class="btn btn-primary" type="submit">Add Addresss</a>
@@ -36,7 +39,7 @@
 								<h2 class="letter_spacing">{{o.branch.name}}<span></span></h2>
 								<p class="pad_bot1">Status : {{o.customer_status}}</p>
 								<p class"letter_spacing">Price : <span>{{o.total_price}}</span></p>
-								<p class"letter_spacing">Date : <span>{{o.order_date}}</span></p>
+								<p class"letter_spacing">Date : <span>{{o.created_at_jalali}}</span></p>
 							</div>
 						</div>
 					</section>

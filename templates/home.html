@@ -15,23 +15,6 @@
 {% endblock nav %}
 {% block content %}
 
-<h2 class="text-dark m-5"> Restaurants </h2>
-    <article id="content" class="container col-11">
-        <div class="wrap">
-            {% for i in branchs %}
-                <section class="col-1-3"><div class="wrap-col">
-                    <div class="box">
-                        <div id="my-foods">
-                            <a href="{% url 'branch_detail' i.id %}"><h2 class="letter_spacing">{{i.name}}<span></span></h2></a>
-                                {%for img in i.branch_menus.all%}
-                                    <figure><img src="{{img.food.food_image}}" alt="" ></figure>
-                                {%endfor%}
-                        </div>
-                    </div>
-                </section>
-            {%endfor%}  
-        </div>
-    </article>
 <h2 class="text-dark m-5"> Most Seller Foods </h2>
 
     <article id="content" class="container col-11">
