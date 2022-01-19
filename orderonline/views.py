@@ -117,7 +117,7 @@ def cart(request):
             branch_order.customer_status = "order_confirmed"
             branch_order.address = customer_address
             branch_order.save()
-            return render(request,"cart.html",{'msg':"no orderitems available!"})
+            return render(request,"cart.html",{'msg':"registrated, thank for shoping :)"})
         else:
             return reverse('add_to_cart')
     try:
